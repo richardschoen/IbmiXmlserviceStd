@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>IbmiXmlserviceStd</id>
+    <version>1.0.1</version>
+    <authors>Richard Schoen</authors>
+    <owners>Richard Schoen</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is an IBMi - AS/400 data access layer that can be used with the standard Windows .Net Framework 4.6.1 and above as well as .Net Core 2.0.0 and above. It requires an IBM i or AS/400 running OS/400 or IBMi V5R4 and above and the XMLSERVICE software must be installed and an Apache Web Server instance of it must be running.</description>
+    <copyright>Richard Schoen</copyright>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\bin\Debug\netstandard2.0\IbmiXmlserviceStd.dll" target="lib\netstandard2.0\IbmiXmlserviceStd.dll" />
+  </files>
+</package>
