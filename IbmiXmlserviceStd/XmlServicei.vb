@@ -600,7 +600,7 @@ Public Class XmlServicei
             End If
 
             'Convert DataTable to JSON
-            oJsonHelper.DataTableToJsonWithStringBuilder(_dtReturnData, debugInfo)
+            sJsonData = oJsonHelper.DataTableToJsonWithStringBuilder(_dtReturnData, debugInfo)
 
             'Return JSON output
             Return sJsonData.ToString
@@ -1117,7 +1117,7 @@ Public Class XmlServicei
 
             'Export results to CSV file
             If rtnquery Then
-                Return GetQueryResultsDataTableToCsvFile(sCsvOutputFile, replace, sFieldSepchar, sFieldDataDelimChar)
+                Return GetQueryResultsDataTableToCsvFile(sCsvOutputFile, sFieldSepchar, sFieldDataDelimChar, replace)
             Else
                 Throw New Exception("Query failed. Error: " & GetLastError())
             End If
