@@ -19,4 +19,4 @@ UseHttpCredentials parameter and set it to True on the SetHttpUserInfo method.
 You can always refer to the Yips site for more install info on XMLSERVICE: 
 http://yips.idevcloud.com/wiki/index.php/xmlservice/xmlserviceinstall 
 
-Class has been tested with XML Tookit library (XMLSERVICE) V1.9.7.
+Class has been tested with XML Tookit library (XMLSERVICE) V1.9.7. 
