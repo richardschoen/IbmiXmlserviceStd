@@ -208,7 +208,7 @@ Public Class XmlServicei
     ''' </summary>
     ''' <param name="sUser">IBM i User</param>
     ''' <param name="sPassword">IBM i Password</param>
-    ''' <param name="UseHttpCredentials">Use Apache HTTP authentication credentials</param>
+    ''' <param name="UseHttpCredentials">Use Apache HTTP authentication credentials.</param>
     ''' <returns>True-Success, False-Fail</returns>
     ''' <remarks></remarks>
     Public Function SetUserInfo(sUser As String, sPassword As String, UseHttpCredentials As Boolean) As Boolean

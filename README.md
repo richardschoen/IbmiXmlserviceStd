@@ -20,3 +20,11 @@ You can always refer to the Yips site for more install info on XMLSERVICE:
 http://yips.idevcloud.com/wiki/index.php/xmlservice/xmlserviceinstall 
 
 Class has been tested with XML Tookit library (XMLSERVICE) V1.9.7. 
+
+There is a Nuget package available to install the DLL in to a new .Net 4.6.1+ or .Net Core 2.0.0+ application.
+
+IBM i Multi-platform Xmlservice .Net Wrapper for Dotnet Standard Nuget Site Link
+https://www.nuget.org/packages/IbmiXmlserviceStd
+
+
+
