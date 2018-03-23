@@ -2,3 +2,5 @@
 Fixed GetQueryResultsDataTableToCsvFile. Was throwing a data type error because fields not passed in correct order.
 Fixed GetQueryResultsDataTableToJsonFile. Was returning blank data always. Wasn't returning final JSON string.
 
+1.0.2
+Added ExecuteSqlQueryToList function to query data and return as a generic list with optional column names in first element.

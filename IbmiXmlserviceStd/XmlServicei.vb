@@ -962,6 +962,46 @@ Public Class XmlServicei
     End Function
 
     ''' <summary>
+    ''' This function queries the DB2 database with selected SQL statement and returns results to generic list all in one step.
+    ''' Column names can optionally be returned in first row of generic list.
+    ''' </summary>
+    ''' <param name="sSQL">SQL Select. INSERT, UPDATE and DELETE not allowed </param>
+    ''' <param name="sQueryResultOutputFile">Optional PC output file for XML response data. Otherwise data set is created from memory.</param>
+    ''' <param name="firstRowColumnNames">Optional - Return first row as column names. False=No column names, True=Return column names. Default=False</param>
+    ''' <returns>Generic List object with results of query or Nothing on error</returns>
+    ''' <remarks></remarks>
+    Public Function ExecuteSqlQueryToList(sSQL As String, Optional sQueryResultOutputFile As String = "", Optional firstRowColumnNames As Boolean = False) As List(Of List(Of Object))
+
+        Dim sdb2parm As String = _DB2Parm
+        Dim sRtnXML As String = ""
+        Dim dtTemp As DataTable
+
+        Try
+
+            _LastError = ""
+            sRtnXML = ""
+            _LastHTTPResponse = ""
+            _LastXMLResponse = ""
+
+            'Run query to DataTable
+            dtTemp = ExecuteSqlQueryToDataTable(sSQL, sQueryResultOutputFile)
+
+            'If no data table returned, bail out now. Error info will have already been set.
+            If dtTemp Is Nothing Then
+                Return Nothing
+            Else
+                'Export to list and return 
+                Return ExportDataTableToList(dtTemp, firstRowColumnNames)
+            End If
+
+        Catch ex As Exception
+            _LastXMLResponse = GetLastXmlResponse()
+            _LastError = ex.Message
+            Return Nothing
+        End Try
+    End Function
+
+    ''' <summary>
     ''' This function queries the DB2 database with selected SQL statement and returns results to XML dataset stream all in one step 
     ''' </summary>
     ''' <param name="sSQL">SQL Select. INSERT, UPDATE and DELETE not allowed </param>
@@ -2503,6 +2543,48 @@ Public Class XmlServicei
             Return False
         End Try
     End Function
+    ''' <summary>
+    ''' Export DataTable Row List to Generic List and optionally include column names.
+    ''' </summary>
+    ''' <param name="dtTemp">DataTable Object</param>
+    ''' <param name="firstRowColumnNames">Optional - Return first row as column names. False=No column names, True=Return column names. Default=False</param>
+    ''' <returns>List object</returns>
+    Private Function ExportDataTableToList(dtTemp As DataTable, Optional firstRowColumnNames As Boolean = False) As List(Of List(Of Object))
+        Dim result As New List(Of List(Of Object))
+        Dim values As New List(Of Object)
+
+        Try
+
+            _LastError = ""
+
+            'Include first row as columns
+            If firstRowColumnNames Then
+                For Each column As DataColumn In dtTemp.Columns
+                    values.Add(column.ColumnName)
+                Next
+                result.Add(values)
+            End If
+
+            'Output all the data now
+            For Each row As DataRow In dtTemp.Rows
+                values = New List(Of Object)
+                For Each column As DataColumn In dtTemp.Columns
+                    If row.IsNull(column) Then
+                        values.Add(Nothing)
+                    Else
+                        values.Add(row.Item(column))
+                    End If
+                Next
+                result.Add(values)
+            Next
+            Return result
+
+        Catch ex As Exception
+            _LastError = ex.Message
+            Return Nothing
+        End Try
+    End Function
+
 #End Region
 
 End Class

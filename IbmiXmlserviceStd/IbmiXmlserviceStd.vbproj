@@ -8,7 +8,7 @@
     <Description>This is an IBMi - AS/400 data access layer that can be used with the standard Windows .Net Framework 4.6.1 and above as well as .Net Core 2.0.0 and above. It requires an IBM i or AS/400 running OS/400 or IBMi V5R4 and above and the XMLSERVICE software must be installed and an Apache Web Server instance of it must be running.</Description>
     <Copyright>Richard Schoen</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <AssemblyVersion>1.0.1.2</AssemblyVersion>
     <FileVersion>1.0.1.2</FileVersion>
   </PropertyGroup>
