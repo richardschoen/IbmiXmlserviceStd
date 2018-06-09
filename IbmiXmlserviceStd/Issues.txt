@@ -4,3 +4,31 @@ Fixed GetQueryResultsDataTableToJsonFile. Was returning blank data always. Wasn'
 
 1.0.2
 Added ExecuteSqlQueryToList function to query data and return as a generic list with optional column names in first element.
+
+1.0.3 - 6/8/2018
+-Added SetCData option to set XMLSERVICE *cdata control option. Default is *cdata which means cdata enabled.
+If cdata in on, returned query fields will get wrapped in the CDATA wrapper so ampersand (&) and 
+other special characters don't cause XML parsing errors on the return data. XML parsing errors mean 
+that no data gets returned into a DataSet or DataTable when a query completes successfully, but the 
+XML data does not parse correctly.
+
+=Add optional enableCData as last parameter to the SetUserInfoExt function. Default=*cdata(on)
+Making the parm optional should keep it compatible. Since we can't tell when people will query
+data with special characters it makes sense to default to *cdata. The option can always be
+toggled by calling SetCdataOption(True) to set *cdata(on) or SetCDataOption(False) to set *cdata(off)
+for the CData option.
+
+Note: The YIPS docs say that setting should be *cdata(on) or *cdata(off) but both of these choices
+seemed to result in cdata being on so we just use the *cdata keyword which seems to work fine.
+
+-Changed ExecuteSqlNonQuery to look for 2 potential valid return codes. When Cdata is enabled, the 
+XMLSERVICE service program returns the success statement with more spaces than when Cdata is off. Nice :-)
+Original return check: <execute stmt='stmt1'>\r\n<success>+++ success stmt1</success>\r\n</execute>"
+New check with Cdata enabled: "+++ success stmt1". 
+We now check for both returns which should cover all non query return scenarios from XMLSERVICE.
+Theoretically we could remove the original one, but now we just do a double check.
+This should prevent any false completion errors from the ExecuteSqlNonQuery function when they 
+actually succeeded.
+
+-If *cdata is enabled, the following functions now wrap SQL statements with cdata wrapper.
+ExecuteSqlQuery and ExecuteSQLNonQuery. All other functions ultimately map to these.

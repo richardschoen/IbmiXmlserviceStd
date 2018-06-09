@@ -1,9 +1,9 @@
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\bin\Release\netstandard2.0\IbmiXmlserviceStd.deps.json
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\bin\Release\netstandard2.0\IbmiXmlserviceStd.dll
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\bin\Release\netstandard2.0\IbmiXmlserviceStd.pdb
-C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\obj\Release\netstandard2.0\IbmiXmlserviceStd.vbprojResolveAssemblyReference.cache
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\obj\Release\netstandard2.0\IbmiXmlserviceStd.vbproj.CoreCompileInputs.cache
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\obj\Release\netstandard2.0\IbmiXmlserviceStd.AssemblyInfoInputs.cache
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\obj\Release\netstandard2.0\IbmiXmlserviceStd.AssemblyInfo.vb
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\obj\Release\netstandard2.0\IbmiXmlserviceStd.dll
 C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\obj\Release\netstandard2.0\IbmiXmlserviceStd.pdb
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStd\obj\Release\netstandard2.0\IbmiXmlserviceStd.vbprojAssemblyReference.cache

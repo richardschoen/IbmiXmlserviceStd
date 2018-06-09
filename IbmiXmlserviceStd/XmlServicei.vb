@@ -48,6 +48,7 @@ Public Class XmlServicei
     Private _Password As String = ""
     Private _IPCINfo As String = "/tmp/xmlservicei"
     Private _IPCPersistance As String = "*sbmjob"
+    Private _cDataOption As String = "*cdata"
     Private _DB2Info As String = "*LOCAL"
     Private _LastHTTPResponse As String = ""
     Private _LastXMLResponse As String = ""
@@ -151,13 +152,19 @@ Public Class XmlServicei
     ''' <param name="sHttpUser">Http Auth user. Only use if HTTP auth credentials are different than IBMi user info and web server auth enabled.</param>
     ''' <param name="sHttpPass">Http Auth password. Only use if HTTP auth credentials are different than IBMi user info and web server auth enabled.</param>
     ''' <param name="iSize">XML response buffer size. Default = 500000</param>
+    ''' <param name="bEenableCdata">Enable wrapping returned query fields with CDATA tags automatically. True=Enable CData, False=Disable CData. Default=True</param>
     ''' <returns>True-Success, False-Fail</returns>
     ''' <remarks></remarks>
-    Public Function SetUserInfoExt(sBaseUrl As String, sUser As String, sPassword As String, UseHttpCredentials As Boolean, Optional sIpcInfo As String = "/tmp/xmlservicei", Optional persistJobs As Boolean = True, Optional sDb2Info As String = "*LOCAL", Optional iHttpTimeout As Integer = 60000, Optional sHttpUser As String = "", Optional sHttpPass As String = "", Optional iSize As Integer = 500000) As Boolean
+    Public Function SetUserInfoExt(sBaseUrl As String, sUser As String, sPassword As String, UseHttpCredentials As Boolean, Optional sIpcInfo As String = "/tmp/xmlservicei", Optional persistJobs As Boolean = True, Optional sDb2Info As String = "*LOCAL", Optional iHttpTimeout As Integer = 60000, Optional sHttpUser As String = "", Optional sHttpPass As String = "", Optional iSize As Integer = 500000, Optional bEenableCdata As Boolean = True) As Boolean
 
         Try
 
             _LastError = ""
+
+            'Set this before IPC info gets set since CData value is set there.
+            If SetCdataOption(bEenableCdata) = False Then
+                Throw New Exception("Error setting CData option")
+            End If
 
             If SetBaseURL(sBaseUrl) = False Then
                 Throw New Exception("Error setting base URL")
@@ -275,9 +282,33 @@ Public Class XmlServicei
             'http://yips.idevcloud.com/wiki/index.php/XMLService/XMLSERVICEConnect
 
             If persistJobs Then 'XMLSERVICE jobs will persist for stateful processes
-                _IPCPersistance = "*sbmjob"
+                _IPCPersistance = "*sbmjob " & _cDataOption  'Enable CDATA on control option if set
             Else 'XMLSERVICE jobs will not persist for stateless processes
-                _IPCPersistance = "*here"
+                _IPCPersistance = "*here " & _cDataOption 'Enable CDATA on control option if set
+            End If
+
+            Return True
+        Catch ex As Exception
+            _LastError = ex.Message
+            Return False
+        End Try
+    End Function
+    ''' <summary>
+    ''' Set Cdata status. Cdata will be enabled by default.
+    ''' The class defaults to *cdata enabled so this call not needed unless you want to turn CDATA on or off.
+    ''' </summary>
+    ''' <param name="enableCdata">Enable wrapping returned query fields with CDATA tags automatically. True=Enable CData, False=Disable CData. Default=True</param>
+    ''' <returns>True-Success, False-Fail</returns>
+    ''' <remarks></remarks>
+    Public Function SetCdataOption(Optional enableCdata As Boolean = True) As Boolean
+        Try
+            _LastError = ""
+
+            If enableCdata Then
+                _cDataOption = "*cdata"
+            Else
+                '*cdata(off/on) switch doesn't seem to be needed so we just eliminate *cdata keyword for disabled.
+                _cDataOption = ""
             End If
 
             Return True
@@ -719,8 +750,10 @@ Public Class XmlServicei
         Dim sRtnXML As String = ""
         Dim rtnexecute As Boolean
         Dim sSuccessValue As String = "<execute stmt='stmt1'>@@CHR10<success>+++ success stmt1</success>@@CHR10</execute>"
+        Dim sSuccessValue2 As String = "+++ success stmt1"
         Dim rtnload As Boolean = False
-
+        Dim sSqlWork As String = sSQL
+        '<success>         +++ success stmt1   </success>
         Try
 
             _LastError = ""
@@ -735,6 +768,11 @@ Public Class XmlServicei
             'Replace success values with correct ascii values. The return data contains a line feed
             sSuccessValue = sSuccessValue.Replace("@@CHR10", vbLf)
 
+            'Set up SQL with CDATA if enabled
+            If _cDataOption.Trim.ToLower = "*cdata" Then
+                sSqlWork = "<![CDATA[" & sSqlWork & "]]>"
+            End If
+
             'SQL query base XML string. This version disables committment control.
             Dim sXMLIN As String = "<?xml version='1.0'?>" & vbCrLf &
                  "<?xml-stylesheet type='text/xsl' href='/DemoXslt.xsl'?>" & vbCrLf &
@@ -746,7 +784,7 @@ Public Class XmlServicei
                     "<connect conn='myconn' options='noauto' error='fast'/>" & vbCrLf &
                     "</sql>" & vbCrLf &
                     "<sql>" & vbCrLf &
-                    "<prepare conn='myconn'>" & sSQL & "</prepare>" & vbCrLf &
+                    "<prepare conn='myconn'>" & sSqlWork & "</prepare>" & vbCrLf &
                     "</sql>" & vbCrLf &
                     "<sql>" & vbCrLf &
                     "<execute/>" & vbCrLf &
@@ -792,7 +830,7 @@ Public Class XmlServicei
             _LastXMLResponse = sRtnXML
 
             'Check for SQL action success in XML response data
-            If sRtnXML.IndexOf(sSuccessValue) > 0 Then
+            If sRtnXML.Contains(sSuccessValue) Or sRtnXML.Contains(sSuccessValue2) Then
                 rtnexecute = True
             Else
                 _LastError = "SQL error occured. Please use GetLastXmlResponse to review the last XML info to determine the cause."
@@ -822,6 +860,7 @@ Public Class XmlServicei
         Dim sdb2parm As String = _DB2Parm
         Dim sRtnXML As String = ""
         Dim rtnload As Boolean
+        Dim sSQLWork As String = sSQL
 
         Try
 
@@ -834,6 +873,11 @@ Public Class XmlServicei
             _dsXmlResponseData = Nothing
             _dtReturnData = Nothing
 
+            'Set up SQL with CDATA if enabled
+            If _cDataOption.Trim.ToLower = "*cdata" Then
+                sSQLWork = "<![CDATA[" & sSQLWork & "]]>"
+            End If
+
             'SQL query base XML string
             Dim sXMLIN As String = "<?xml version='1.0'?>" & vbCrLf &
                  "<?xml-stylesheet type='text/xsl' href='/DemoXslt.xsl'?>" & vbCrLf &
@@ -845,7 +889,7 @@ Public Class XmlServicei
                     "<connect conn='myconn' options='noauto'/>" & vbCrLf &
                     "</sql>" & vbCrLf &
                     "<sql>" & vbCrLf &
-                    "<prepare conn='myconn'>" & sSQL.Trim & "</prepare>" & vbCrLf &
+                    "<prepare conn='myconn'>" & sSQLWork.Trim & "</prepare>" & vbCrLf &
                     "</sql>" & vbCrLf &
                     "<sql>" & vbCrLf &
                     "<execute/>" & vbCrLf &
@@ -1408,6 +1452,7 @@ Public Class XmlServicei
     ''' <param name="sLibrary">IBM i program library</param>
     ''' <param name="sProcedure">IBM i subprocedure</param>
     ''' <param name="aParmList">IBM i program parm list array</param>
+    ''' <param name="rtnParmList">IBM i program return parm list array</param>
     ''' <returns>True-Service program call succeeded, False-Service program failed</returns>
     ''' <remarks></remarks>
     Public Function ExecuteProgramProcedure(sServiceProgram As String, sLibrary As String, sProcedure As String, aParmList As ArrayList, rtnParmList As ArrayList) As Boolean
