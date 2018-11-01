@@ -1,5 +1,5 @@
 # IbmiXmlserviceStd
-IBM i XMLSERVICE Data Access Service Wrapper for .Net and .Net Core
+IBM i C# and VB.Net XMLSERVICE Data Access Service Wrapper for .Net and .Net Core
 
 This class is used to interface with existing IBM i database, program calls, CL commands, service programs and 
 data queues via the XMLSERVICE service program. It also needs an Apache instance hooked up for XMLCGI calls
