@@ -1,0 +1,8 @@
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\bin\Debug\netstandard2.0\IbmiXmlserviceStd.deps.json
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\bin\Debug\netstandard2.0\IbmiXmlserviceStd.dll
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\bin\Debug\netstandard2.0\IbmiXmlserviceStd.pdb
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\obj\Debug\netstandard2.0\IbmiXmlserviceStdCs.csproj.CoreCompileInputs.cache
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\obj\Debug\netstandard2.0\IbmiXmlserviceStdCs.AssemblyInfoInputs.cache
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\obj\Debug\netstandard2.0\IbmiXmlserviceStdCs.AssemblyInfo.cs
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\obj\Debug\netstandard2.0\IbmiXmlserviceStd.dll
+C:\gitrepos\IbmiXmlserviceStd\IbmiXmlserviceStdCs\IbmiXmlserviceStdCs\obj\Debug\netstandard2.0\IbmiXmlserviceStd.pdb

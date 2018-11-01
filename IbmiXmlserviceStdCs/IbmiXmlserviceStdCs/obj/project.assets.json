@@ -48,8 +48,6 @@
       "path": "netstandard.library/2.0.1",
       "files": [
         "LICENSE.TXT",
-        "NETStandard.Library.2.0.1.nupkg.sha512",
-        "NETStandard.Library.nuspec",
         "THIRD-PARTY-NOTICES.TXT",
         "build/NETStandard.Library.targets",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -167,7 +165,9 @@
         "build/netstandard2.0/ref/mscorlib.dll",
         "build/netstandard2.0/ref/netstandard.dll",
         "build/netstandard2.0/ref/netstandard.xml",
-        "lib/netstandard1.0/_._"
+        "lib/netstandard1.0/_._",
+        "netstandard.library.2.0.1.nupkg.sha512",
+        "netstandard.library.nuspec"
       ]
     }
   },
@@ -181,13 +181,13 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "1.0.3",
+    "version": "1.1.0",
     "restore": {
-      "projectUniqueName": "C:\\gitrepos\\IbmiXmlserviceStd\\IbmiXmlserviceStd\\IbmiXmlserviceStd.vbproj",
+      "projectUniqueName": "C:\\gitrepos\\IbmiXmlserviceStd\\IbmiXmlserviceStdCs\\IbmiXmlserviceStdCs\\IbmiXmlserviceStdCs.csproj",
       "projectName": "IbmiXmlserviceStd",
-      "projectPath": "C:\\gitrepos\\IbmiXmlserviceStd\\IbmiXmlserviceStd\\IbmiXmlserviceStd.vbproj",
+      "projectPath": "C:\\gitrepos\\IbmiXmlserviceStd\\IbmiXmlserviceStdCs\\IbmiXmlserviceStdCs\\IbmiXmlserviceStdCs.csproj",
       "packagesPath": "C:\\Users\\richard\\.nuget\\packages\\",
-      "outputPath": "C:\\gitrepos\\IbmiXmlserviceStd\\IbmiXmlserviceStd\\obj\\",
+      "outputPath": "C:\\gitrepos\\IbmiXmlserviceStd\\IbmiXmlserviceStdCs\\IbmiXmlserviceStdCs\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

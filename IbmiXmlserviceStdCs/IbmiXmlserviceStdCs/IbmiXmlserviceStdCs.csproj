@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>IbmiXmlserviceStd</RootNamespace>
+    <AssemblyName>IbmiXmlserviceStd</AssemblyName>
+    <Version>1.1.0</Version>
+    <Authors>Richard Schoen</Authors>
+    <Company>RichardSchoen.Net</Company>
+    <Product>Ibmi Multi-platform Xmlservice .Net Wrapper - Dotnet Standard - C#</Product>
+    <Description>This is an IBMi - AS/400 data access layer that can be used with the standard Windows .Net Framework 4.6.1 and above as well as .Net Core 2.0.0 and above. It requires an IBM i or AS/400 running OS/400 or IBMi V5R4 and above and the XMLSERVICE software must be installed and an Apache Web Server instance of it must be running.</Description>
+    <Copyright>Richard Schoen</Copyright>
+    <PackageReleaseNotes>Converted code base to C# instead of VB.</PackageReleaseNotes>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+</Project>
