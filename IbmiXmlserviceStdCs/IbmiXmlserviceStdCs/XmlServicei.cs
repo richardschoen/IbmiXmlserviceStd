@@ -76,12 +76,13 @@ public class XmlServicei
     private string _LastDataQueueDataReceived = "";
     private int _LastDataQueueLengthReceived = 0;
     private string _CrLf = "\r\n";
+    private bool _allowInvalidSslCertificates = false;
 
-    /// <summary>
-    ///  Program call parameter structure
-    ///  </summary>
-    ///  <remarks></remarks>
-    public struct PgmParmList
+        /// <summary>
+        ///  Program call parameter structure
+        ///  </summary>
+        ///  <remarks></remarks>
+        public struct PgmParmList
     {
         public string parmtype;
         public string parmvalue;
@@ -158,25 +159,26 @@ public class XmlServicei
             return false;
         }
     }
-    /// <summary>
-    ///  Set ALL base user info parameters for XMLCGI program calls in a single method call.
-    ///  Set this value one time each time the class Is instantiated.
-    ///  This is a convenience method to set all connection info in a single call.
-    ///  </summary>
-    ///  <param name="sBaseUrl">Base URL to set for path to XMLSERVICE and XMLCGI calls.</param>
-    ///  <param name="sUser">IBM i User and HTTP Auth</param>
-    ///  <param name="sPassword">IBM i Password and HTTP Auth</param>
-    ///  <param name="UseHttpCredentials">Use Apache HTTP authentication credentials</param>
-    ///  <param name="sDb2Info">DB2 server info. Default = *LOCAL for current DB2 server</param>
-    ///  <param name="sIpcInfo">IPC info. Example: /tmp/xmlservicei</param>
-    ///  <param name="persistjobs">True-Stateful XTOOLKIT jobs are started that must be ended eventually with KillService method. False-Stateless jobs. XMLSERVICE XTOOLKIT jobs end immediately after call completes.</param>
-    ///  <param name="sHttpUser">Http Auth user. Only use if HTTP auth credentials are different than IBMi user info and web server auth enabled.</param>
-    ///  <param name="sHttpPass">Http Auth password. Only use if HTTP auth credentials are different than IBMi user info and web server auth enabled.</param>
-    ///  <param name="iSize">XML response buffer size. Default = 500000</param>
-    ///  <param name="bEenableCdata">Enable wrapping returned query fields with CDATA tags automatically. True=Enable CData, False=Disable CData. Default=True</param>
-    ///  <returns>True-Success, False-Fail</returns>
-    ///  <remarks></remarks>
-    public bool SetUserInfoExt(string sBaseUrl, string sUser, string sPassword, bool UseHttpCredentials, string sIpcInfo = "/tmp/xmlservicei", bool persistJobs = true, string sDb2Info = "*LOCAL", int iHttpTimeout = 60000, string sHttpUser = "", string sHttpPass = "", int iSize = 500000, bool bEenableCdata = true)
+        /// <summary>
+        ///  Set ALL base user info parameters for XMLCGI program calls in a single method call.
+        ///  Set this value one time each time the class Is instantiated.
+        ///  This is a convenience method to set all connection info in a single call.
+        ///  </summary>
+        ///  <param name="sBaseUrl">Base URL to set for path to XMLSERVICE and XMLCGI calls.</param>
+        ///  <param name="sUser">IBM i User and HTTP Auth</param>
+        ///  <param name="sPassword">IBM i Password and HTTP Auth</param>
+        ///  <param name="UseHttpCredentials">Use Apache HTTP authentication credentials</param>
+        ///  <param name="sDb2Info">DB2 server info. Default = *LOCAL for current DB2 server</param>
+        ///  <param name="sIpcInfo">IPC info. Example: /tmp/xmlservicei</param>
+        ///  <param name="persistjobs">True-Stateful XTOOLKIT jobs are started that must be ended eventually with KillService method. False-Stateless jobs. XMLSERVICE XTOOLKIT jobs end immediately after call completes.</param>
+        ///  <param name="sHttpUser">Http Auth user. Only use if HTTP auth credentials are different than IBMi user info and web server auth enabled.</param>
+        ///  <param name="sHttpPass">Http Auth password. Only use if HTTP auth credentials are different than IBMi user info and web server auth enabled.</param>
+        ///  <param name="iSize">XML response buffer size. Default = 500000</param>
+        ///  <param name="bEenableCdata">Enable wrapping returned query fields with CDATA tags automatically. True=Enable CData, False=Disable CData. Default=True</param>
+        ///  <param name="allowInvalidSslCertificates">Optional Allow invallid certs. true=Yes, false=no. Default=false - certs must be valid.</param>
+        ///  <returns>True-Success, False-Fail</returns>
+        ///  <remarks></remarks>
+        public bool SetUserInfo(string sBaseUrl, string sUser, string sPassword, bool UseHttpCredentials, string sIpcInfo = "/tmp/xmlservicei", bool persistJobs = true, string sDb2Info = "*LOCAL", int iHttpTimeout = 60000, string sHttpUser = "", string sHttpPass = "", int iSize = 500000, bool bEenableCdata = true, bool allowInvalidSslCertificates = false)
     {
         try
         {
@@ -211,7 +213,10 @@ public class XmlServicei
             if (SetXmlResponseBufferSize(iSize) == false)
                 throw new Exception("Error setting XML response buffer size");
 
-            return true;
+            // Set allow invalid certificates
+            _allowInvalidSslCertificates = allowInvalidSslCertificates;
+
+                return true;
         }
         catch (Exception ex)
         {
@@ -867,7 +872,7 @@ public class XmlServicei
             sdb2parm = sdb2parm.Replace("@@xmloutvalue", sXMLOUT);
 
             // Execute request 
-            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials);
+            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials,_allowInvalidSslCertificates);
 
             // Bail out if HTTPRequest failure
             if (sRtnXML.StartsWith("ERROR"))
@@ -950,7 +955,7 @@ public class XmlServicei
             sdb2parm = sdb2parm.Replace("@@xmloutvalue", sXMLOUT);
 
             // Execute request 
-            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials);
+            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials, _allowInvalidSslCertificates);
 
             // Bail out if HTTPRequest failure
             if (sRtnXML.StartsWith("ERROR"))
@@ -1332,7 +1337,7 @@ public class XmlServicei
             sdb2parm = sdb2parm.Replace("@@xmloutvalue", sXMLOUT);
 
             // Execute request
-            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials);
+            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials, _allowInvalidSslCertificates);
 
             // Bail out if +++ success not returned in XML response
             if (sRtnXML.Contains("+++ success"))
@@ -1416,7 +1421,7 @@ public class XmlServicei
             sdb2parm = sdb2parm.Replace("@@xmloutvalue", sXMLOUT);
 
             // Execute request
-            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials);
+            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials, _allowInvalidSslCertificates);
 
             // Bail out if +++ success not returned in XML response
             if (sRtnXML.Contains("+++ success"))
@@ -1524,7 +1529,7 @@ public class XmlServicei
             sdb2parm = sdb2parm.Replace("@@xmloutvalue", sXMLOUT);
 
             // Execute request
-            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials);
+            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials, _allowInvalidSslCertificates);
 
             // Bail out if +++ success not returned in XML response
             if (sRtnXML.Contains("+++ success"))
@@ -1846,14 +1851,14 @@ public class XmlServicei
             sdb2parm = sdb2parm + "&submit=*immed end (kill job)";
 
             // Execute request
-            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials);
+            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials, _allowInvalidSslCertificates);
 
             // Bail out if HTTPRequest failure
             if (sRtnXML.StartsWith("ERROR"))
                 throw new Exception(sRtnXML);
 
             // Execute XMLSERVICE POST request to run command
-            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials);
+            sRtnXML = ExecuteHttpPostRequest(_BaseURL, "POST", sdb2parm, _HttpTimeout, _UseHttpCredentials, _allowInvalidSslCertificates);
 
             // Bail out if +++ success not returned in XML response
             if (sRtnXML == "")
@@ -2304,22 +2309,39 @@ public class XmlServicei
 
 
 
-    /// <summary>
-    ///  Make an XMLSERVICE HTTP POST request with selected URL and get response
-    ///  </summary>
-    ///  <param name="URL">URL where XMLSERVICE is set up.</param>
-    ///  <param name="method">POST or GET</param>
-    ///  <param name="POSTdata">Data to post ont he request</param>
-    ///  <param name="iTimeout">Optional HTTP request timeout. Default = 60000 milliseconds</param>
-    ///  <param name="iUseHttpCredentials">Optional Use network credentials for web server auth. 0=No, 1=Yes Default = 0</param>
-    ///  <returns>XML response or error string starting with "ERROR" </returns>
-    ///  <remarks></remarks>
-    private string ExecuteHttpPostRequest(string URL, string method, string POSTdata, int iTimeout = 60000, bool iUseHttpCredentials = false)
-    {
+        /// <summary>
+        ///  Make an XMLSERVICE HTTP POST request with selected URL and get response
+        ///  </summary>
+        ///  <param name="URL">URL where XMLSERVICE is set up.</param>
+        ///  <param name="method">POST or GET</param>
+        ///  <param name="POSTdata">Data to post ont he request</param>
+        ///  <param name="iTimeout">Optional HTTP request timeout. Default = 60000 milliseconds</param>
+        ///  <param name="iUseHttpCredentials">Optional Use network credentials for web server auth. 0=No, 1=Yes Default = 0</param>
+        ///  <param name="allowInvalidSslCertificates">Optional Allow invallid certs. true=Yes, false=no. Default=false - certs must be valid.</param>
+        ///  <returns>XML response or error string starting with "ERROR" </returns>
+        ///  <remarks></remarks>
+        private string ExecuteHttpPostRequest(string URL, string method, string POSTdata, int iTimeout = 60000, bool iUseHttpCredentials = false, bool allowInvalidSslCertificates = false)
+        {
         string responseData = "";
         try
         {
             _LastHTTPResponse = "";
+
+            // Set TLS mode to 1.2 if not set and also set allow invalid certificates setting value.   
+            if (System.Net.ServicePointManager.SecurityProtocol != System.Net.SecurityProtocolType.Tls12)
+            {
+
+                // Set TLS 1.2 protocal 
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+                // If enabled, this callback allows us to ignore invalid certificates. 
+                // https://stackoverflow.com/questions/2675133/c-sharp-ignore-certificate-errors
+                if (allowInvalidSslCertificates)
+                {
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                }
+            }
+
             System.Net.HttpWebRequest hwrequest = (System.Net.HttpWebRequest) System.Net.WebRequest.Create(URL);
             hwrequest.Accept = "*/*";
             hwrequest.AllowAutoRedirect = true;

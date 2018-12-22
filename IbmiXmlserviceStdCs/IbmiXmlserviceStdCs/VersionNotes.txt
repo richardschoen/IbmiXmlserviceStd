@@ -1,0 +1,30 @@
+﻿------------------------------------------------------------------------------------------
+Version Notes
+------------------------------------------------------------------------------------------
+Version 1.1.1.0 - 12/22/2018 - Richard Schoen
+-Initial release of build after convert to C#.
+-For SSL, we added TLS1.2 for default security setting when SSL enabled. 
+-Renamed SetUserInfoExt to SetUserInfo. It overloads the existing SetUserInfo.
+-For certificates added a setting on SetUserInfo to ignoeInvalidSslCertificates. Set to true 
+ if you want to ignore an invalid or expired certificate.
+
+------------------------------------------------------------------------------------------
+Feature ideas
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+Problems found
+------------------------------------------------------------------------------------------
+12/16/2018 - Fixed - Appears to be buffer size limit or some other memory limit when selecting a large
+             number of records with multiple fields. Need to document and report.
+12/16/2018 - Open  - Qshell command call always returns: return=1.0 success=true. Tried simple mkdir /zzz and did not work. 
+
+------------------------------------------------------------------------------------------
+Helpful links
+------------------------------------------------------------------------------------------
+Setting up NGINX on IBMi
+https://www-01.ibm.com/support/docview.wss?uid=ibm10743711
+
+Reverse Proxy Using ExpressJS
+https://codeforgeek.com/2015/12/reverse-proxy-using-expressjs/
+
