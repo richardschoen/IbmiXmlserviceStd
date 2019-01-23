@@ -26,5 +26,6 @@ There is a Nuget package available to install the DLL in to a new .Net 4.6.1+ or
 IBM i Multi-platform Xmlservice .Net Wrapper for Dotnet Standard Nuget Site Link
 https://www.nuget.org/packages/IbmiXmlserviceStd
 
-
+XMLSERVICE is now typically packaged on the IBMi in library: **QXMLSERV** as part of the operating system, but if you want to play with the code, here's the current Github location as of 1/23/2019
+https://github.com/IBM/xmlservice
 
