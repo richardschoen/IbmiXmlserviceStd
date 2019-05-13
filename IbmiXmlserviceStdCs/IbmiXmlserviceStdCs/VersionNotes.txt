@@ -8,6 +8,14 @@ Version 1.1.1.0 - 12/22/2018 - Richard Schoen
 -For certificates added a setting on SetUserInfo to ignoeInvalidSslCertificates. Set to true 
  if you want to ignore an invalid or expired certificate.
 
+ Version 1.1.2.0 - 05/12/2019 - Richard Schoen
+-Set table name for returned DataTable. Default name=Table1
+-ExecuteSqlQuery method now supports SELECT or CALL. Call can be used to execute an SQLRPGLE program call to return resultset.
+ The program does NOT have to be registered with DB2 in order to return a resultset so you might call it a simulated 
+ stored procedure call.
+-Added GetLastPostData method to gain access to the actual call data passed to XMLSERVICE. Good for troubleshooting
+ or simply logging the formatted XML calls made to XMLSERVICE.
+
 ------------------------------------------------------------------------------------------
 Feature ideas
 ------------------------------------------------------------------------------------------

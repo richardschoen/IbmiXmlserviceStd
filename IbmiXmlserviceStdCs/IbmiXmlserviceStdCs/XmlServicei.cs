@@ -77,6 +77,7 @@ public class XmlServicei
     private int _LastDataQueueLengthReceived = 0;
     private string _CrLf = "\r\n";
     private bool _allowInvalidSslCertificates = false;
+    private string _LastPostData = "";
 
         /// <summary>
         ///  Program call parameter structure
@@ -475,12 +476,28 @@ public class XmlServicei
             return "";
         }
     }
-    /// <summary>
-    ///  Returns XML response message string from last XMLSERVICE call.
-    ///  </summary>
-    ///  <returns>Last XML response message string</returns>
-    ///  <remarks></remarks>
-    public string GetLastXmlResponse()
+        /// <summary>
+        ///  Returns last request that was posted
+        ///  </summary>
+        ///  <returns>Last post message string</returns>
+        ///  <remarks></remarks>
+        public string GetLastPostData()
+        {
+            try
+            {
+                return _LastPostData;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+        /// <summary>
+        ///  Returns XML response message string from last XMLSERVICE call.
+        ///  </summary>
+        ///  <returns>Last XML response message string</returns>
+        ///  <remarks></remarks>
+        public string GetLastXmlResponse()
     {
         try
         {
@@ -942,8 +959,8 @@ public class XmlServicei
             if (sSQL.ToUpper().StartsWith("UPDATE") | sSQL.ToUpper().StartsWith("DELETE") | sSQL.ToUpper().StartsWith("INSERT"))
                 throw new Exception("SQL statement cannot start with INSERT, UPDATE or DELETE.");
 
-            if (sSQL.ToUpper().StartsWith("SELECT") == false)
-                throw new Exception("SQL selection must start with SELECT");
+            if (sSQL.ToUpper().StartsWith("SELECT") == false && sSQL.ToUpper().StartsWith("CALL") == false)
+                throw new Exception("SQL selection must start with SELECT or CALL");
 
             // Replace parms into XML string
             sdb2parm = sdb2parm.Replace("@@db2value", _DB2Info);
@@ -2326,6 +2343,8 @@ public class XmlServicei
         try
         {
             _LastHTTPResponse = "";
+            // Save last post data
+            _LastPostData = POSTdata;
 
             // Set TLS mode to 1.2 if not set and also set allow invalid certificates setting value.   
             if (System.Net.ServicePointManager.SecurityProtocol != System.Net.SecurityProtocolType.Tls12)
@@ -2436,6 +2455,9 @@ public class XmlServicei
 
             // Start new DataTable for XML resultset returned by XMLSERVICE from IBM i
             _dtReturnData = new DataTable();
+            // Set the table name
+            _dtReturnData.TableName = "Table1";
+
             foreach (DataRow dr1 in _dsXmlResponseData.Tables["col"].Rows)
                 _dtReturnData.Columns.Add(dr1[0].ToString(), Type.GetType("System.String"));
 
@@ -2501,6 +2523,8 @@ public class XmlServicei
 
             // Start new DataTable for XML resultset returned by XMLSERVICE from IBM i
             _dtReturnData = new DataTable();
+            // Set table name
+            _dtReturnData.TableName = "Table1";
             foreach (DataRow dr1 in _dsXmlResponseData.Tables["col"].Rows)
                 _dtReturnData.Columns.Add(dr1[0].ToString(), Type.GetType("System.String"));
 
@@ -2564,6 +2588,8 @@ public class XmlServicei
 
             // Start new DataTable for XML resultset returned by XMLSERVICE from IBM i
             _dtProgramResponse = new DataTable();
+            // Set the table name
+            _dtProgramResponse.TableName = "Table1";
             _dtProgramResponse.Columns.Add("parmtype", Type.GetType("System.String"));
             _dtProgramResponse.Columns.Add("parmvalue", Type.GetType("System.String"));
 
@@ -2624,6 +2650,8 @@ public class XmlServicei
 
                 // Start new DataTable for XML resultset returned by XMLSERVICE from IBM i
                 _dtCommandResponse = new DataTable();
+                // Set the table name
+                _dtCommandResponse.TableName = "Table1";
                 _dtCommandResponse.Columns.Add("parmtype", Type.GetType("System.String"));
                 _dtCommandResponse.Columns.Add("parmvalue", Type.GetType("System.String"));
 
@@ -2647,6 +2675,8 @@ public class XmlServicei
 
                 // Start new DataTable for XML resultset returned by XMLSERVICE from IBM i
                 _dtCommandResponse = new DataTable();
+                // Set the table name
+                _dtCommandResponse.TableName = "Table1";
                 _dtCommandResponse.Columns.Add("parmtype", Type.GetType("System.String"));
                 _dtCommandResponse.Columns.Add("parmvalue", Type.GetType("System.String"));
 
