@@ -30,3 +30,7 @@ XMLSERVICE is now typically packaged on the IBMi in library: **QXMLSERV** as par
 
 https://github.com/IBM/xmlservice
 
+Note: 5/12/2019 - When working with the source, make sure to work with the C# code in: ***IbmiXmlserviceStdCs***. The VB code in ***IbmiXmlserviceStd*** will not be maintained going forward.
+
+
+
