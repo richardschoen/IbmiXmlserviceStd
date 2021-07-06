@@ -1,5 +1,5 @@
 # IbmiXmlserviceStd
-There is a **SSH-enabled version of the library commercially available**. You can visit http://www.mobigogo.net or reach out via email to info@mobigogo.net for more info.
+There is a **SSH-enabled version of the library commercially available named: IbmiXmlserviceStdSsh**. You can visit http://www.mobigogo.net or reach out via email to info@mobigogo.net for more info.
 Documentation can be reviewed here: http://mobigogo.net/files/docs/IbmiXmlserviceStdSsh 
 
 IBM i C# and VB.Net XMLSERVICE Data Access Service Wrapper for .Net and .Net Core
