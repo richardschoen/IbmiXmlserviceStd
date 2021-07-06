@@ -1,4 +1,7 @@
 # IbmiXmlserviceStd
+There is a **SSH-enabled version of the library commercially available**. You can visit http://www.mobigogo.net or reach out via email to info@mobigogo.net for more info.
+Documentation can be reviewed here: http://mobigogo.net/files/docs/IbmiXmlserviceStdSsh 
+
 IBM i C# and VB.Net XMLSERVICE Data Access Service Wrapper for .Net and .Net Core
 
 This class is used to interface with existing IBM i database, program calls, CL commands, service programs and 
@@ -31,6 +34,8 @@ XMLSERVICE is now typically packaged on the IBMi in library: **QXMLSERV** as par
 https://github.com/IBM/xmlservice
 
 Note: 5/12/2019 - When working with the source, make sure to work with the C# code in: ***IbmiXmlserviceStdCs***. The VB code in ***IbmiXmlserviceStd*** will not be maintained going forward.
+
+
 
 
 
